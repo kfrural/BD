@@ -27,20 +27,20 @@ CREATE TABLE animais(
 
 CREATE TABLE Eventos (
     ID int AUTO_INCREMENT PRIMARY KEY,
-    LoteID int,
+    animaisID int,
     TipoEvento varchar(50),
     DataEvento date,
     Valor double,
     RecebimentoPagamento varchar(50),
     DataVencimento date,
-    FOREIGN KEY (LoteID) REFERENCES animais(ID)
+    FOREIGN KEY (animaisID) REFERENCES animais(ID)
 );
 
 CREATE TABLE ControleFinanceiro (
     ID int AUTO_INCREMENT PRIMARY KEY,
-    AnimalID int,
+    animaisID int,
     Ganhos double,
     Gastos double,
     Saldo double,
-    FOREIGN KEY (AnimalID) REFERENCES animais(ID)
+    FOREIGN KEY (animaisID) REFERENCES animais(ID)
 );
