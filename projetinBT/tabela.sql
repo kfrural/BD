@@ -30,9 +30,6 @@ CREATE TABLE Eventos (
     animaisID int,
     TipoEvento varchar(50),
     DataEvento date,
-    Valor double,
-    RecebimentoPagamento varchar(50),
-    DataVencimento date,
     FOREIGN KEY (animaisID) REFERENCES animais(ID)
 );
 
