@@ -6,8 +6,9 @@
 2. [Escopo do Projeto](#escopo-do-projeto)
 3. [Requisitos do Sistema](#requisitos-do-sistema)
 4. [Modelagem de Dados](#modelagem-de-dados)
-5. [Diagrama de Fluxo](#diagrama-de-fluxo)
-6. [Próximos Passos](#próximos-passos)
+5. [Diagrama de Conceito](#diagrama-de-conceito)
+6. [Diagrama de Fluxo](#diagrama-de-fluxo)
+7. [Próximos Passos](#próximos-passos)
 
 ---
 
@@ -114,7 +115,7 @@ O escopo do projeto inclui:
 |------------------|---------------|--------------------------------------|
 | ID               | Inteiro       | Identificador único do exame         |
 | ID Pessoa        | Inteiro       | Chave estrangeira para pessoa        |
-| ID Lab           | Interio       | Chave estrangeira para laboratorio   |
+| ID Lab           | Inteiro       | Chave estrangeira para laboratorio   |
 | Data             | Date          | Data do exame                        |
 | Informe          | Texto         | Tipo de informe (laboratório/clínico)|
 | Resultado        | Texto         | Resultado do exame (positivo/negativo)|
@@ -138,6 +139,72 @@ O escopo do projeto inclui:
 | Localização       | Texto         | Localização do laboratório          |
 | Telefone          | Texto         | Telefone do laboratório             |
 | Email             | Texto         | Email do laboratório                |
+
+## Diagrama de Conceito
+
+```mermaid
+erDiagram
+    Pessoas {
+        int ID
+        string Nome
+        date Data_nasc
+        int CPF
+        string Categoria
+    }
+    Funcionarios {
+        int ID_Funcionario
+        int ID_Pessoa
+        string Equipe
+        string Funcao
+    }
+    Equipes {
+        int ID_Equipe
+        string Setor
+    }
+    Enderecos {
+        int ID
+        int ID_Pessoa
+        string Rua
+        int Numero
+        string Complemento
+        string Bairro
+        string Cidade
+        string Estado
+        string CEP
+    }
+    Exames {
+        int ID
+        int ID_Pessoa
+        int ID_Lab
+        date Data
+        string Informe
+        string Resultado
+        string Tipo_Dengue
+    }
+    Notificacoes {
+        int ID
+        datetime Data_Hora
+        string Sintomas
+        string Origem
+        int ID_Laboratorio
+        int ID_Exame
+    }
+    Laboratorios {
+        int ID
+        string Nome
+        string Localizacao
+        string Telefone
+        string Email
+    }
+    
+    Pessoas ||--o{ Funcionarios : "possui"
+    Pessoas ||--o{ Enderecos : "reside"
+    Pessoas ||--o{ Exames : "realiza"
+    Equipes ||--o{ Funcionarios : "gerencia"
+    Laboratorios ||--o{ Exames : "realiza"
+    Laboratorios ||--o{ Notificacoes : "emite"
+    Exames ||--o{ Notificacoes : "gera"
+```
 
 ## Diagrama de Fluxo
 
