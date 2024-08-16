@@ -186,8 +186,10 @@ erDiagram
         datetime Data_Hora
         string Sintomas
         string Origem
+        string Tipo_Notificacao
         int ID_Laboratorio
         int ID_Exame
+        int ID_Funcionario
     }
     Laboratorios {
         int ID
@@ -197,7 +199,8 @@ erDiagram
         string Email
     }
     
-    Pessoas ||--o{ Funcionarios : "possui"
+    Funcionarios ||--o{ Notificacoes : "faz"
+    Pessoas ||--o{ Notificacoes : "faz"
     Pessoas ||--o{ Enderecos : "reside"
     Pessoas ||--o{ Exames : "realiza"
     Equipes ||--o{ Funcionarios : "gerencia"
