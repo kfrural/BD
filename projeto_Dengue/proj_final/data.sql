@@ -69,15 +69,6 @@ CREATE TABLE Vacinas (
     Lote VARCHAR(255)
 );
 
-CREATE TABLE VacinasCampanhas (
-    ID_Vacinacao INT AUTO_INCREMENT PRIMARY KEY,
-    ID_Vacina INT,
-    DataInicio DATE,
-    DataFim DATE,
-    ID_Unidade INT,
-    FOREIGN KEY (ID_Vacina) REFERENCES Vacinas(ID_Vacina),
-    FOREIGN KEY (ID_Unidade) REFERENCES UnidadesSaude(ID_Unidade)
-);
 
 CREATE TABLE Laboratorios (
     ID_Laboratorio INT AUTO_INCREMENT PRIMARY KEY,
