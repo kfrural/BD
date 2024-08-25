@@ -105,3 +105,4 @@ CREATE TABLE AgentesPrevencao (
     ID_Funcionario INT,
     FOREIGN KEY (ID_Funcionario) REFERENCES Funcionarios(ID_Func)
 );
+
