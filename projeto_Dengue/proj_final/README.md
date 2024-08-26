@@ -289,6 +289,17 @@ erDiagram
         string Resultado
         string Tipo
     }
+      Enderecos {
+        int ID
+        int ID_Pessoa
+        string Rua
+        int Numero
+        string Complemento
+        string Bairro
+        string Cidade
+        string Estado
+        string CEP
+    }
 
 
     Funcionario ||--o{ Medico : "é_um"
@@ -310,12 +321,14 @@ erDiagram
     Pessoa ||--o{ Notificacao : "recebe"
     Consulta ||--o{ Exame : "solicita"
     Pessoa ||--o{ Consulta : ""
+    Pessoa ||--o{ Enderecos : "tem"
 
     Vacinacao ||--o{ Pessoa : ""
     Vacina ||--o{ Vacinacao : "tem"
     
     Laboratorio ||--o{ Notificacao : "relata"
     Laboratorio ||--o{ Exame : "relata"
+    Laboratorio ||--o{ Enderecos : "tem"
 
 
 
@@ -342,7 +355,3 @@ graph TD;
 4. **Testes e Validações:** Garantir que todos os componentes funcionem corretamente.
 5. **Treinamento e Implantação:** Treinar a equipe e implementar o sistema.
 6. **Manutenção:** Fornecer suporte contínuo e atualizações conforme necessário.
-
----
-
-Este documento serve como base para o desenvolvimento de um sistema de banco de dados eficiente para o setor de epidemiologia, visando melhorar o gerenciamento e o monitoramento de casos de dengue e outras doenças. A implementação desse projeto contribuirá para uma resposta mais rápida e eficiente às necessidades de saúde pública.
