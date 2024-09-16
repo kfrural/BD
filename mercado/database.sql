@@ -200,3 +200,55 @@ FROM Vendedor;
 --exercio 20
 SELECT COUNT(*) AS vendedores_mais_2500
 FROM Vendedor WHERE salario_fixo::numeric > 2500;
+
+--exercicio 21
+SELECT DISTINCT unidade FROM Produto;
+
+--exercico 22
+SELECT cod_pedido, COUNT(cod_produto) AS numero_produto
+FROM Item_Pedido GROUP BY cod_pedido;
+
+--exercicio 23
+SELECT cod_pedido FROM Item_Pedido
+GROUP BY cod_pedido HAVING COUNT (cod_produto) > 3;
+
+--exercico 24
+SELECT c.nome_cliente, c.cod_cliente, p.cod_pedido
+FROM Cliente c
+JOIN Pedido p ON c.cod_cliente = p.cod_cliente;
+
+--exercico25
+SELECT DISTINCT c.nome_cliente, c.cod_cliente
+FROM Cliente c
+JOIN Pedido p ON c.cod_cliente = p.cod_cliente
+JOIN Endereco e ON c.cod_endereco = e.cod_endereco
+WHERE p.prazo_entrega > 15 AND (e.uf = 'sp' OR e.uf = 'mg'); -- troquei pra mg pra ter graca
+
+--exercicio 26
+SELECT c.nome_cliente, p.prazo_entrega FROM Cliente c
+JOIN Pedido p ON c.cod_cliente = p.cod_cliente
+ORDER BY p.prazo_entrega DESC;
+
+--exerccio 27
+SELECT DISTINCT v.nome_vendedor FROM Vendedor v
+JOIN Pedido p ON v.cod_vendedor = p.cod_vendedor
+WHERE p.prazo_entrega > 15 AND v.salario_fixo::numeric >= 1000.00
+ORDER BY v.nome_vendedor;
+
+--exercico 28
+SELECT DISTINCT c.nome_cliente, c.cod_cliente
+FROM CLiente c
+JOIN Pedido p ON c.cod_cliente = p.cod_cliente
+JOIN Item_Pedido ip ON p.cod_pedido = ip.cod_pedido
+JOIN Produto prod ON ip.cod_produto = prod.cod_produto
+JOIN Endereco e ON c.cod_endereco = e.cod_endereco
+WHERE prod.descricao = 'arroz' AND p.prazo_entrega > 1 AND e.cidade = 'São Geraldo' --mudei pra dar cderto
+ORDER BY c.nome_cliente;
+
+--exercicio 29
+SELECT DISTINCT v.nome_vendedor FROM Vendedor v
+JOIN Pedido p ON v.cod_vendedor = p.cod_vendedor
+JOIN Item_Pedido ip ON p.cod_pedido = ip.cod_pedido
+JOIN Produto prod ON ip.cod_produto = prod.cod_produto
+WHERE prod.descricao = 'chocolate' AND ip.quantidade > 10
+Order BY v.nome_vendedor;
