@@ -46,3 +46,69 @@ CREATE TABLE Item_Pedido (
 	FOREIGN KEY (cod_pedido) REFERENCES Pedido(cod_pedido),
 	FOREIGN KEY (cod_produto) REFERENCES Produto(cod_produto)
 );
+
+INSERT INTO Endereco(endereco, cidade, cep, uf, cgc, inscr_estadual)
+VALUES ('Fazenda Boa Esperanca', 'São Geraldo', '36530000','mg' , 1, '1' );
+
+INSERT INTO Endereco(endereco, cidade, cep, uf, cgc, inscr_estadual)
+VALUES ('Bairro Manuel Moreira', 'Sao Geraldo', '36530000','mg' , 2, '2');
+
+INSERT INTO Endereco(endereco, cidade, cep, uf, cgc, inscr_estadual)
+VALUES ('Av Santa Rita', 'Viçosa', '36570099','mg' , 3, 3);
+
+SELECT * FROM Endereco;
+
+INSERT INTO Cliente (cod_cliente, nome_cliente, cod_endereco)
+VALUES (1,'Karla', 1);
+
+INSERT INTO Cliente (cod_cliente, nome_cliente, cod_endereco)
+VALUES (2, 'jao', 2);
+
+INSERT INTO Cliente (cod_cliente, nome_cliente, cod_endereco)
+VALUES (3, 'luiz', 3);
+
+SELECT * FROM Cliente;
+
+INSERT INTO Vendedor (cod_vendedor, nome_vendedor, salario_fixo, faixa_comissao)
+VALUES (1, 'ze', 2000.00, '3');
+
+INSERT INTO Vendedor (cod_vendedor, nome_vendedor, salario_fixo, faixa_comissao)
+VALUES (2, 'jr', 1234.00, '4');
+
+INSERT INTO Vendedor (cod_vendedor, nome_vendedor, salario_fixo, faixa_comissao)
+VALUES (3, 'pedro', 3214.33, '5');
+
+SELECT * FROM Vendedor;
+
+INSERT INTO Pedido (cod_pedido, prazo_entrega, cod_cliente, cod_vendedor)
+VALUES (1, 10, 1, 1);
+
+INSERT INTO Pedido (cod_pedido, prazo_entrega, cod_cliente, cod_vendedor)
+VALUES (2, 30, 2, 2);
+
+INSERT INTO Pedido (cod_pedido, prazo_entrega, cod_cliente, cod_vendedor)
+VALUES (3, 60, 3, 3);
+
+SELECT * FROM Pedido;
+
+INSERT INTO Produto (cod_produto, unidade, descricao, valor_unitario)
+VALUES (1, 'kg', 'arroz', 40.00);
+
+INSERT INTO Produto (cod_produto, unidade, descricao, valor_unitario)
+VALUES (2, 'kg', 'feijao', 10.00);
+
+INSERT INTO Produto (cod_produto, unidade, descricao, valor_unitario)
+VALUES (3, 'un', 'agua', 1.50);
+
+SELECT * FROM Produto;
+
+INSERT INTO Item_Pedido (cod_pedido, cod_produto, quantidade)
+VALUES (1, 1, 12);
+
+INSERT INTO Item_Pedido (cod_pedido, cod_produto, quantidade)
+VALUES (2, 2, 2);
+
+INSERT INTO Item_Pedido (cod_pedido, cod_produto, quantidade)
+VALUES (3, 3, 3);
+
+SELECT * FROM Item_Pedido;
