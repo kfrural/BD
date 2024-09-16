@@ -132,3 +132,25 @@ WHERE quantidade = 32;
 UPDATE Item_Pedido SET quantidade = 32
 WHERE cod_pedido = 1 AND cod_produto = 1;--pq tinha cadastrado sem 32
 
+--exercicio 5
+SELECT c.nome_cliente, e.endereco, e.cidade, e.uf
+FROM Cliente c
+JOIN Endereco e ON c.cod_endereco = e.cod_endereco
+WHERE e.uf = 'rj'; --nao tem
+
+--exercicio 6
+SELECT descricao FROM Produto
+WHERE unidade = 'un' AND valor_unitario:: numeric < 30.00; --converter pra numeric pra comparar essse trem
+
+--exercicio 7
+SELECT c.nome_cliente, e.endereco, e.cidade, e.uf
+FROM Cliente c
+JOIN Endereco e ON c.cod_endereco = e.cod_endereco
+WHERE e.cidade = 'rio de janeiro' OR e.uf = 'rj'; --nao tem 
+
+--exercicio 8
+SELECT * FROM Pedido WHERE cod_cliente <> 2; --mudei pra 2 pra ter graca
+
+--exercicio 9
+SELECT cod_produto, descricao FROM Produto
+WHERE valor_unitario BETWEEN 5.00 AND 12.00;
