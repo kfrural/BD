@@ -153,4 +153,36 @@ SELECT * FROM Pedido WHERE cod_cliente <> 2; --mudei pra 2 pra ter graca
 
 --exercicio 9
 SELECT cod_produto, descricao FROM Produto
-WHERE valor_unitario BETWEEN 5.00 AND 12.00;
+WHERE valor_unitario::numeric BETWEEN 5.00 AND 12.00; -- converter pra poder comparar
+
+--exercicio 10
+SELECT * FROM Produto WHERE unidade LIKE 'k%';
+
+--exercicio 11
+SELECT * FROM Vendedor WHERE nome_vendedor NOT LIKE 'v%';
+
+--exercicio 12
+SELECT * FROM Vendedor WHERE faixa_comissao IN ('5', '15');
+
+--exercicio13
+SELECT nome_vendedor, salario_fixo FROM Vendedor
+ORDER BY nome_vendedor;
+
+--exercico 14
+SELECT c.nome_cliente, e.cidade, e.uf FROM Cliente c
+JOIN Endereco e ON c.cod_endereco = e.cod_endereco
+ORDER BY e.uf DESC, e.cidade DESC;
+
+--exercicio 15
+SELECT descricao, valor_unitario FROM Produto
+WHERE unidade = 'kg' --mudei pra dar certo
+ORDER BY valor_unitario ASC;
+
+--exercicio16
+SELECT nome_vendedor, salario_fixo::numeric + (salario_fixo::numeric * 0.75) + 120.00
+FROM Vendedor WHERE faixa_comissao = '5'
+ORDER BY nome_vendedor;
+
+--exercicio 17
+SELECT MIN(salario_fixo) AS menor_salario, MAX(salario_fixo) AS maior_salario
+FROM Vendedor;
