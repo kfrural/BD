@@ -112,3 +112,23 @@ INSERT INTO Item_Pedido (cod_pedido, cod_produto, quantidade)
 VALUES (3, 3, 3);
 
 SELECT * FROM Item_Pedido;
+
+-- exercicio num 1
+SELECT descricao, unidade, valor_unitario
+FROM Produto;
+
+-- exercico num2
+SELECT c.nome_cliente, e.endereco, e.cgc
+FROM Cliente c
+JOIN Endereco e ON c.cod_endereco = e.cod_endereco;
+
+--exercico num3
+SELECT * FROM Vendedor;
+
+--exercicio 4
+SELECT cod_pedido, cod_produto, quantidade FROM Item_Pedido
+WHERE quantidade = 32;
+
+UPDATE Item_Pedido SET quantidade = 32
+WHERE cod_pedido = 1 AND cod_produto = 1;--pq tinha cadastrado sem 32
+
