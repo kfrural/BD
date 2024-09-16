@@ -186,3 +186,17 @@ ORDER BY nome_vendedor;
 --exercicio 17
 SELECT MIN(salario_fixo) AS menor_salario, MAX(salario_fixo) AS maior_salario
 FROM Vendedor;
+
+--exercicio 18
+SELECT COALESCE(SUM(ip.quantidade), 0) AS quantidade_total
+FROM Item_Pedido ip
+JOIN Produto p ON ip.cod_produto = p.cod_produto
+WHERE p.descricao = 'vinho' AND p.cod_produto = 78; 
+
+--exercicio 19
+SELECT AVG(salario_fixo::numeric) AS media_salario
+FROM Vendedor;
+
+--exercio 20
+SELECT COUNT(*) AS vendedores_mais_2500
+FROM Vendedor WHERE salario_fixo::numeric > 2500;
