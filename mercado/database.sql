@@ -252,3 +252,28 @@ JOIN Item_Pedido ip ON p.cod_pedido = ip.cod_pedido
 JOIN Produto prod ON ip.cod_produto = prod.cod_produto
 WHERE prod.descricao = 'chocolate' AND ip.quantidade > 10
 Order BY v.nome_vendedor;
+
+--exercicio 30
+SELECT COUNT(DISTINCT c.cod_cliente) AS total_cliente
+FROM Cliente c
+JOIN Pedido p ON c.cod_cliente = p.cod_cliente
+JOIN Vendedor v ON p.cod_vendedor = v.cod_vendedor
+WHERE v.nome_vendedor = 'ze'; -- mudei pra ter resultado
+
+--exercicio 31
+SELECT e.cidade, COUNT(DISTINCT c.cod_cliente) AS total_cliente
+FROM Cliente c
+JOIN Pedido p ON c.cod_cliente = p.cod_cliente
+JOIN Vendedor v ON p.cod_vendedor = v.cod_vendedor
+JOIN Endereco e ON c.cod_endereco = e.cod_endereco
+WHERE v.nome_vendedor = 'ze' AND e.cidade IN ('São Geraldo', 'vicosa')
+GROUP BY e.cidade; --mudei pra ter resposta
+
+--exercicio 32
+SELECT DISTINCT p.descricao FROM Produto p
+JOIN Item_Pedido ip ON p.cod_produto = ip.cod_produto
+WHERE ip.quantidade = 10;
+
+--exercicio 33
+SELECT nome_vendedor FROM Vendedor
+WHERE salario_fixo::numeric < (SELECT AVG(salario_fixo::numeric) FROM Vendedor);
