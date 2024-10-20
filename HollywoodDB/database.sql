@@ -58,3 +58,53 @@ CREATE TABLE ProjetoPatrocinador (
     FOREIGN KEY (cod_patrocinador) REFERENCES Patrocinadores(cod_patrocinador)
         ON DELETE CASCADE
 );
+
+
+-- Inserindo uns dados para testar
+
+INSERT INTO Pessoas (nome, telefone, endereco, sexo, estado_civil) VALUES
+('Maria Silva', '1234-5678', 'Rua A, 123', 'Feminino', 'Solteiro'),
+('João Oliveira', '9876-5432', 'Avenida B, 456', 'Masculino', 'Casado'),
+('Ana Costa', '5555-1234', 'Rua C, 789', 'Feminino', 'Divorciado');
+
+INSERT INTO Celebridades (tipo, cod_pessoa, tipo_filme, funcao, preferencias) VALUES
+('Estrela de Cinema', 1, 'Aventura', 'Atriz', 'Filmes de ação e drama'),
+('Modelo', 2, NULL, NULL, 'Moda e publicidades'),
+('Estrela de Cinema', 3, 'Comédia', 'Atriz', 'Filmes de comédia');
+
+INSERT INTO EstrelasDeCinema (cod_celebridade) VALUES
+(1),
+(3);
+
+INSERT INTO Modelos (cod_celebridade) VALUES
+(2);
+
+INSERT INTO Projetos (tipo_projeto, cod_estrela, cod_modelo) VALUES
+('Filme', 1, NULL),
+('Filme', 3, NULL),
+('Modelagem', NULL, 1);
+
+INSERT INTO Patrocinadores (nome, tipo) VALUES
+('Empresa A', 'Empresa'),
+('João da Silva', 'Pessoa Física');
+
+INSERT INTO ProjetoPatrocinador (cod_projeto, cod_patrocinador) VALUES
+(1, 1),
+(2, 2),
+(3, 1);
+
+SELECT * FROM Pessoas;
+
+SELECT c.cod_celebridade, p.nome, c.tipo, c.tipo_filme, c.funcao, c.preferencias
+FROM Celebridades c
+JOIN Pessoas p ON c.cod_pessoa = p.cod_pessoa;
+
+SELECT p.cod_projeto, p.tipo_projeto, e.cod_estrela, m.cod_modelo
+FROM Projetos p
+LEFT JOIN EstrelasDeCinema e ON p.cod_estrela = e.cod_estrela
+LEFT JOIN Modelos m ON p.cod_modelo = m.cod_modelo;
+
+SELECT pa.nome AS patrocinador, pr.cod_projeto, pr.tipo_projeto
+FROM Patrocinadores pa
+JOIN ProjetoPatrocinador pp ON pa.cod_patrocinador = pp.cod_patrocinador
+JOIN Projetos pr ON pp.cod_projeto = pr.cod_projeto;
