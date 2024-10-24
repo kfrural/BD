@@ -1,110 +1,213 @@
-CREATE TABLE Pessoas (
-    cod_pessoa INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    telefone VARCHAR(20),
-    endereco VARCHAR(200),
-    sexo ENUM('Masculino', 'Feminino', 'Outro') NOT NULL,
-    estado_civil ENUM('Solteiro', 'Casado', 'Divorciado', 'Viúvo') NOT NULL
+CREATE TABLE Person (
+    PID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Phone VARCHAR(20),
+    Address VARCHAR(200),
+    Gender VARCHAR(10),
+    Type VARCHAR(20) CHECK (Type IN ('MovieProfessional', 'Celebrity', 'Sponsor'))
 );
 
-CREATE TABLE Celebridades (
-    cod_celebridade INT AUTO_INCREMENT PRIMARY KEY,
-    tipo ENUM('Estrela de Cinema', 'Modelo') NOT NULL,
-    cod_pessoa INT,
-    tipo_filme VARCHAR(100),
-    funcao VARCHAR(50),
-    preferencias VARCHAR(200),
-    FOREIGN KEY (cod_pessoa) REFERENCES Pessoas(cod_pessoa)
-        ON DELETE CASCADE
+CREATE TABLE Married (
+    PID_A INT,
+    PID_B INT,
+    PRIMARY KEY (PID_A, PID_B),
+    FOREIGN KEY (PID_A) REFERENCES Person(PID) ON DELETE CASCADE,
+    FOREIGN KEY (PID_B) REFERENCES Person(PID) ON DELETE CASCADE
 );
 
-CREATE TABLE EstrelasDeCinema (
-    cod_estrela INT AUTO_INCREMENT PRIMARY KEY,
-    cod_celebridade INT,
-    FOREIGN KEY (cod_celebridade) REFERENCES Celebridades(cod_celebridade)
-        ON DELETE CASCADE
+CREATE TABLE Celebrity (
+    PID INT PRIMARY KEY,
+    BirthDate DATE,
+    Agent_ID INT,
+    FOREIGN KEY (PID) REFERENCES Person(PID) ON DELETE CASCADE,
+    FOREIGN KEY (Agent_ID) REFERENCES Person(PID) ON DELETE SET NULL
 );
 
-CREATE TABLE Modelos (
-    cod_modelo INT AUTO_INCREMENT PRIMARY KEY,
-    cod_celebridade INT,
-    FOREIGN KEY (cod_celebridade) REFERENCES Celebridades(cod_celebridade)
-        ON DELETE CASCADE
+CREATE TABLE Agent (
+    PID INT PRIMARY KEY,
+    Agency VARCHAR(100),
+    FOREIGN KEY (PID) REFERENCES Person(PID) ON DELETE CASCADE
 );
 
-CREATE TABLE Projetos (
-    cod_projeto INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_projeto ENUM('Filme', 'Modelagem') NOT NULL,
-    cod_estrela INT,
-    cod_modelo INT,
-    FOREIGN KEY (cod_estrela) REFERENCES EstrelasDeCinema(cod_estrela)
-        ON DELETE SET NULL,
-    FOREIGN KEY (cod_modelo) REFERENCES Modelos(cod_modelo)
-        ON DELETE SET NULL
+CREATE TABLE Project (
+    Project_ID INT PRIMARY KEY,
+    Cost DECIMAL(10,2),
+    Location VARCHAR(200),
+    Type VARCHAR(20) CHECK (Type IN ('FilmProject', 'ModelingProject')) 
 );
 
-CREATE TABLE Patrocinadores (
-    cod_patrocinador INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    tipo ENUM('Pessoa Física', 'Empresa') NOT NULL
+CREATE TABLE Sponsor (
+    Sponsor_ID INT PRIMARY KEY,
+    Company VARCHAR(100),
+    FOREIGN KEY (Sponsor_ID) REFERENCES Person(PID) ON DELETE CASCADE 
 );
 
-CREATE TABLE ProjetoPatrocinador (
-    cod_projeto INT,
-    cod_patrocinador INT,
-    PRIMARY KEY (cod_projeto, cod_patrocinador),
-    FOREIGN KEY (cod_projeto) REFERENCES Projetos(cod_projeto)
-        ON DELETE CASCADE,
-    FOREIGN KEY (cod_patrocinador) REFERENCES Patrocinadores(cod_patrocinador)
-        ON DELETE CASCADE
+CREATE TABLE MovieProfessional (
+    PID INT PRIMARY KEY,
+    Company VARCHAR(100),
+    FOREIGN KEY (PID) REFERENCES Person(PID) ON DELETE CASCADE
 );
 
+CREATE TABLE Critic (
+    PID INT PRIMARY KEY,
+    Popularity DECIMAL(5,2),
+    FOREIGN KEY (PID) REFERENCES MovieProfessional(PID) ON DELETE CASCADE
+);
 
--- Inserindo uns dados para testar
+CREATE TABLE MovieStar (
+    PID INT PRIMARY KEY,
+    MovieType VARCHAR(100),
+    FOREIGN KEY (PID) REFERENCES Celebrity(PID) ON DELETE CASCADE
+);
 
-INSERT INTO Pessoas (nome, telefone, endereco, sexo, estado_civil) VALUES
-('Maria Silva', '1234-5678', 'Rua A, 123', 'Feminino', 'Solteiro'),
-('João Oliveira', '9876-5432', 'Avenida B, 456', 'Masculino', 'Casado'),
-('Ana Costa', '5555-1234', 'Rua C, 789', 'Feminino', 'Divorciado');
+CREATE TABLE Models (
+    PID INT PRIMARY KEY,
+    Preferences VARCHAR(100),
+    FOREIGN KEY (PID) REFERENCES Celebrity(PID) ON DELETE CASCADE
+);
 
-INSERT INTO Celebridades (tipo, cod_pessoa, tipo_filme, funcao, preferencias) VALUES
-('Estrela de Cinema', 1, 'Aventura', 'Atriz', 'Filmes de ação e drama'),
-('Modelo', 2, NULL, NULL, 'Moda e publicidades'),
-('Estrela de Cinema', 3, 'Comédia', 'Atriz', 'Filmes de comédia');
+CREATE TABLE ActsIn (
+    PID INT,
+    Project_ID INT,
+    PRIMARY KEY (PID, Project_ID),
+    FOREIGN KEY (PID) REFERENCES MovieStar(PID) ON DELETE CASCADE,
+    FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
+);
 
-INSERT INTO EstrelasDeCinema (cod_celebridade) VALUES
-(1),
-(3);
+CREATE TABLE FilmProject (
+    Project_ID INT PRIMARY KEY,
+    Title VARCHAR(200),
+    FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
+);
 
-INSERT INTO Modelos (cod_celebridade) VALUES
-(2);
+CREATE TABLE ModelsIn (
+    PID INT,
+    Project_ID INT,
+    Paid VARCHAR(20),
+    PRIMARY KEY (PID, Project_ID),
+    FOREIGN KEY (PID) REFERENCES Models(PID) ON DELETE CASCADE,
+    FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
+);
 
-INSERT INTO Projetos (tipo_projeto, cod_estrela, cod_modelo) VALUES
-('Filme', 1, NULL),
-('Filme', 3, NULL),
-('Modelagem', NULL, 1);
+CREATE TABLE Company (
+    PID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    FOREIGN KEY (PID) REFERENCES Person(PID) ON DELETE CASCADE
+);
 
-INSERT INTO Patrocinadores (nome, tipo) VALUES
-('Empresa A', 'Empresa'),
-('João da Silva', 'Pessoa Física');
+CREATE TABLE ModelingProject (
+    Project_ID INT PRIMARY KEY,
+    Description VARCHAR(200),
+    Type VARCHAR(100),
+    FOREIGN KEY (Project_ID) REFERENCES Project(Project_ID) ON DELETE CASCADE
+);
 
-INSERT INTO ProjetoPatrocinador (cod_projeto, cod_patrocinador) VALUES
-(1, 1),
-(2, 2),
-(3, 1);
+CREATE TABLE SponsorModelingProject (
+    Sponsor_ID INT,
+    Project_ID INT,
+    PRIMARY KEY (Sponsor_ID, Project_ID),
+    FOREIGN KEY (Sponsor_ID) REFERENCES Sponsor(Sponsor_ID) ON DELETE CASCADE,
+    FOREIGN KEY (Project_ID) REFERENCES ModelingProject(Project_ID) ON DELETE CASCADE
+);
 
-SELECT * FROM Pessoas;
+--ignorar daqui pra baixo
+--insercao de dados pra testes
 
-SELECT c.cod_celebridade, p.nome, c.tipo, c.tipo_filme, c.funcao, c.preferencias
-FROM Celebridades c
-JOIN Pessoas p ON c.cod_pessoa = p.cod_pessoa;
+INSERT INTO Person (PID, Name, Phone, Address, Gender, Type) VALUES 
+(1, 'Alice Johnson', '123-456-7890', '123 Elm St', 'Female', 'Celebrity'),
+(2, 'Bob Smith', '234-567-8901', '456 Oak St', 'Male', 'MovieProfessional'),
+(3, 'Carol White', '345-678-9012', '789 Pine St', 'Female', 'Sponsor'),
+(4, 'David Brown', '456-789-0123', '321 Maple St', 'Male', 'MovieProfessional'),
+(5, 'Eve Davis', '567-890-1234', '654 Cedar St', 'Female', 'Celebrity');
 
-SELECT p.cod_projeto, p.tipo_projeto, e.cod_estrela, m.cod_modelo
-FROM Projetos p
-LEFT JOIN EstrelasDeCinema e ON p.cod_estrela = e.cod_estrela
-LEFT JOIN Modelos m ON p.cod_modelo = m.cod_modelo;
+INSERT INTO Married (PID_A, PID_B) VALUES 
+(1, 2), 
+(1, 4); 
 
-SELECT pa.nome AS patrocinador, pr.cod_projeto, pr.tipo_projeto
-FROM Patrocinadores pa
-JOIN ProjetoPatrocinador pp ON pa.cod_patrocinador = pp.cod_patrocinador
-JOIN Projetos pr ON pp.cod_projeto = pr.cod_projeto;
+INSERT INTO Celebrity (PID, BirthDate, Agent_ID) VALUES 
+(1, '1990-01-01', NULL), 
+(5, '1995-05-15', NULL);
+
+INSERT INTO Agent (PID, Agency) VALUES 
+(2, 'Top Talent Agency'), 
+(4, 'Best Movie Agency');
+
+INSERT INTO Project (Project_ID, Cost, Location, Type) VALUES 
+(101, 50000.00, 'Los Angeles', 'FilmProject'), 
+(102, 30000.00, 'New York', 'ModelingProject');
+
+INSERT INTO Sponsor (Sponsor_ID, Company) VALUES 
+(3, 'Big Corp');
+
+INSERT INTO MovieProfessional (PID, Company) VALUES 
+(2, 'Production Co.'), 
+(4, 'Film Makers Inc.');
+
+INSERT INTO Critic (PID, Popularity) VALUES 
+(2, 75.5), 
+(4, 80.2);
+
+INSERT INTO MovieStar (PID, MovieType) VALUES 
+(1, 'Action'), 
+(5, 'Drama');
+
+INSERT INTO Models (PID, Preferences) VALUES 
+(5, 'Fashion, Commercial');
+
+INSERT INTO ActsIn (PID, Project_ID) VALUES 
+(1, 101), 
+(5, 102);
+
+INSERT INTO FilmProject (Project_ID, Title) VALUES 
+(101, 'Super Action Movie');
+
+INSERT INTO ModelsIn (PID, Project_ID, Paid) VALUES 
+(5, 102, 'Yes');
+
+INSERT INTO Company (PID, Name) VALUES 
+(2, 'Production Co.'), 
+(4, 'Film Makers Inc.');
+
+INSERT INTO ModelingProject (Project_ID, Description, Type) VALUES 
+(102, 'Fashion Show 2024', 'Fashion');
+
+--testes de exibicao
+SELECT * FROM Person;
+
+SELECT 
+    P1.Name AS Person_A, 
+    P2.Name AS Person_B 
+FROM Married M
+JOIN Person P1 ON M.PID_A = P1.PID
+JOIN Person P2 ON M.PID_B = P2.PID;
+
+SELECT 
+    C.Name, 
+    C.BirthDate 
+FROM Celebrity C
+JOIN Person P ON C.PID = P.PID;
+
+SELECT 
+    Project_ID, 
+    Cost, 
+    Location, 
+    Type 
+FROM Project;
+
+SELECT 
+    M.Name, 
+    MS.MovieType 
+FROM MovieStar MS
+JOIN Person M ON MS.PID = M.PID;
+
+SELECT 
+    M.Name, 
+    MD.Preferences 
+FROM Models MD
+JOIN Person M ON MD.PID = M.PID;
+
+SELECT 
+    P.Name, 
+    S.Company 
+FROM Sponsor S
+JOIN Person P ON S.Sponsor_ID = P.PID;
